@@ -105,8 +105,20 @@ void InitKeyHandler(void)
 {
  if(!pOldWinProc)
   {      
-   pOldWinProc = (WNDPROC)GetWindowLong(hWWindow, GWL_WNDPROC );
-   SetWindowLong(hWWindow, GWL_WNDPROC, (long)key_winproc);
+   pOldWinProc = (WNDPROC)GetWindowLong(hWWindow,
+#ifdef _WIN64
+       GWLP_WNDPROC
+#else
+       GWL_WNDPROC
+#endif
+   );
+   SetWindowLong(hWWindow,
+#ifdef _WIN64
+       GWLP_WNDPROC
+#else
+       GWL_WNDPROC
+#endif
+       , (long)key_winproc);
   }
 } 
 
@@ -115,8 +127,14 @@ void InitKeyHandler(void)
 void ExitKeyHandler(void)
 {
  if(pOldWinProc)
-  SetWindowLong(hWWindow,GWL_WNDPROC,              // set old proc
-                (long)pOldWinProc);
+  SetWindowLong(hWWindow,
+#ifdef _WIN64
+      GWLP_WNDPROC
+#else
+      GWL_WNDPROC
+#endif
+      , (long)pOldWinProc); // set old proc
+                
  pOldWinProc = 0;                                      
 }
 

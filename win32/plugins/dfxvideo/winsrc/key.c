@@ -121,8 +121,20 @@ void SetKeyHandler(void)
 {
  if(!wpOrgWndProc)                                     // setup keyhandler
   {
-   wpOrgWndProc = (WNDPROC)GetWindowLong(hWGPU, GWL_WNDPROC );
-   SetWindowLong(hWGPU, GWL_WNDPROC, (long)KeyWndProc);
+   wpOrgWndProc = (WNDPROC)GetWindowLong(hWGPU,
+#ifdef _WIN64
+       GWLP_WNDPROC
+#else
+       GWL_WNDPROC
+#endif
+   );
+   SetWindowLong(hWGPU,
+#ifdef _WIN64
+       GWLP_WNDPROC
+#else
+       GWL_WNDPROC
+#endif
+       , (long)KeyWndProc);
   }
 }
 
@@ -131,7 +143,13 @@ void SetKeyHandler(void)
 void ReleaseKeyHandler(void)
 {
  if(wpOrgWndProc)
-  SetWindowLong(hWGPU,GWL_WNDPROC,              // set old proc
+  SetWindowLong(hWGPU,
+#ifdef _WIN64
+      GWLP_WNDPROC
+#else
+      GWL_WNDPROC
+#endif
+      ,              // set old proc
                 (long)wpOrgWndProc);
  wpOrgWndProc = 0;                                      
 }
