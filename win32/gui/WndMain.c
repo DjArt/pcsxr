@@ -1536,8 +1536,12 @@ BOOL CALLBACK ConfigureCpuDlgProc(HWND hW, UINT uMsg, WPARAM wParam, LPARAM lPar
 					Config.Cpu     = (Button_GetCheck(GetDlgItem(hW,IDC_CPU)) ? CPU_INTERPRETER : CPU_DYNAREC);
 					if (tmp != Config.Cpu) {
 						psxCpu->Shutdown();
+#ifdef __i386__
 						if (Config.Cpu == CPU_INTERPRETER) psxCpu = &psxInt;
 						else psxCpu = &psxRec;
+#else
+						psxCpu = &psxInt;
+#endif
 						if (psxCpu->Init() == -1) {
 							SysClose();
 							exit(1);
