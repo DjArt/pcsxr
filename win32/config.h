@@ -8,10 +8,6 @@
 #ifndef CONFIG_H
 #define CONFIG_H
 
-#ifndef __i386__
-#define __i386__ 1
-#endif
-
 #include <windows.h>
 
 #ifndef MAXPATHLEN
